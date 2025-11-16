@@ -1,0 +1,21 @@
+import seaborn as sns
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from matplotlib import pyplot as plt
+from sklearn.datasets import load_breast_cancer
+import numpy as np
+
+x = load_breast_cancer().data[:,:1]
+y = load_breast_cancer().target
+
+xtrain,xtest,ytrain,ytest = train_test_split(x,y,test_size=0.2,random_state=42)
+
+model = LogisticRegression()
+model.fit(xtrain,ytrain)
+ypred = model.predict(xtest)
+xrange = np.linspace(x.min(),x.max(),300).reshape(-1,1)
+
+plt.scatter(xtest ,ytest , color='red')
+plt.scatter(xtest,ypred , color='yellow',marker="+")
+plt.plot(xrange , model.predict_proba(xrange)[:,1])
+
